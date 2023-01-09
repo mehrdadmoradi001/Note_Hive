@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_hive_flutter/data/constants/constant_colors.dart';
+
+import '../data/task.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({Key? key}) : super(key: key);
@@ -11,6 +14,13 @@ class AddTaskScreen extends StatefulWidget {
 class _AddTaskScreenState extends State<AddTaskScreen> {
   FocusNode negahban1 = FocusNode();
   FocusNode negahban2 = FocusNode();
+
+  final TextEditingController textFiledTaskTitleController =
+      TextEditingController();
+  final TextEditingController textFiledTaskSubTitleController =
+      TextEditingController();
+
+  final taskBox = Hive.box<Task>('taskBox');
 
   @override
   void initState() {
@@ -33,9 +43,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           child: Column(
             children: [
               SizedBox(height: 50),
-              _getTextFiledTask(focusNode: negahban1),
+              _getTextFiledTask(
+                focusNode: negahban1,
+                controller: textFiledTaskTitleController,
+              ),
               SizedBox(height: 50),
-              _getTextFiledTask(focusNode: negahban2, num: 2),
+              _getTextFiledTask(
+                  focusNode: negahban2,
+                  controller: textFiledTaskSubTitleController,
+                  num: 2),
               Spacer(),
               _getButtonTask(),
             ],
@@ -47,7 +63,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   Widget _getButtonTask() {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        String taskTitle = textFiledTaskTitleController.text;
+        String taskSubTitle = textFiledTaskSubTitleController.text;
+        _addTask(taskTitle,taskSubTitle);
+      },
       child: Text(
         'اضافه کردن تسک',
         style: TextStyle(
@@ -62,12 +82,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
-  Widget _getTextFiledTask({FocusNode? focusNode, int? num}) {
+  Widget _getTextFiledTask(
+      {FocusNode? focusNode, TextEditingController? controller, int? num}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 44),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: TextField(
+          controller: controller,
           maxLines: num,
           focusNode: focusNode,
           decoration: InputDecoration(
@@ -97,4 +119,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       ),
     );
   }
+
+
+  _addTask(String taskTitle, String taskSubTitle){
+    //add task
+    var task = Task(title: taskTitle, subTitle: taskSubTitle);
+    taskBox.add(task);
+  }
+
+
+
 }
