@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                     },
                   ),
-                  Text('title'),
+                  Text('امروز با هم ورزش داریم'),
                 ],
               ),
               Text('SecondText'),
@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         SizedBox(width: 12),
         Container(
-          width: 90,
+          width: 95,
           height: 28,
           decoration: BoxDecoration(
             color: greenLightColor,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:note_hive_flutter/data/constants/constant_colors.dart';
 import 'package:note_hive_flutter/screens/home_screen.dart';
 
 void main() async {
@@ -14,6 +15,16 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        fontFamily: 'SM',
+        textTheme: TextTheme(
+          headline4: TextStyle(
+            fontFamily: 'GB',
+            fontSize: 16,
+            color: whiteColor,
+          ),
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       home: HomeScreen(),
     );
