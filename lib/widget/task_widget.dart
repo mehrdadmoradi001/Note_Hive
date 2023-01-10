@@ -12,7 +12,7 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  bool isChecked = false;
+  bool isDone = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +20,26 @@ class _TaskWidgetState extends State<TaskWidget> {
   }
 
   Widget _getTaskItem() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 18,vertical: 12),
-      height: 132,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
+    return GestureDetector(
+      onTap: (){
+        setState(() {
+          isDone = !isDone;
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 18,vertical: 12),
+        height: 132,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: whiteColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(10),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: _getMainContent(),
+        child: Padding(
+          padding: EdgeInsets.all(12),
+          child: _getMainContent(),
+        ),
       ),
     );
   }
@@ -54,10 +61,10 @@ class _TaskWidgetState extends State<TaskWidget> {
                     colorConfig: MSHColorConfig.fromCheckedUncheckedDisabled(
                       checkedColor: greenColor,
                     ),
-                    value: isChecked,
+                    value: isDone,
                     onChanged: (selected) {
                       setState(() {
-                        isChecked = selected;
+                        isDone = selected;
                       });
                     },
                   ),
