@@ -3,7 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 part 'task.g.dart';
 
 @HiveType(typeId: 1)
-class Task {
+class Task extends HiveObject{
   Task({required this.title, required this.subTitle, this.isDone=false});
 
   @HiveField(0)
