@@ -15,13 +15,20 @@ class _TaskWidgetState extends State<TaskWidget> {
   bool isBoxChecked = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    isBoxChecked = widget.task.isDone;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return _getTaskItem();
   }
 
   Widget _getTaskItem() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         setState(() {
           isBoxChecked = !isBoxChecked;
           widget.task.isDone = isBoxChecked;
@@ -29,7 +36,7 @@ class _TaskWidgetState extends State<TaskWidget> {
         });
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 18,vertical: 12),
+        margin: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         height: 132,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -57,9 +64,10 @@ class _TaskWidgetState extends State<TaskWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Checkbox(value: isBoxChecked, onChanged: (isChecked){ //
-
-                  },),
+                  Checkbox(
+                    value: isBoxChecked,
+                    onChanged: (isChecked) {},
+                  ),
                   Text(widget.task.title),
                 ],
               ),
