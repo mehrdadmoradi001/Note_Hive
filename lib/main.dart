@@ -30,7 +30,7 @@ class Application extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: AddTaskScreen(),
+      home: HomeScreen(),
     );
   }
 }
