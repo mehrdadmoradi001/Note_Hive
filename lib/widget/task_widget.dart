@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:note_hive_flutter/data/constants/constant_colors.dart';
 import 'package:note_hive_flutter/data/task.dart';
+import 'package:note_hive_flutter/screens/edit_task_screen.dart';
 
 class TaskWidget extends StatefulWidget {
   TaskWidget({Key? key, required this.task}) : super(key: key);
@@ -123,26 +124,35 @@ class _TaskWidgetState extends State<TaskWidget> {
           ),
         ),
         SizedBox(width: 12),
-        Container(
-          width: 95,
-          height: 28,
-          decoration: BoxDecoration(
-            color: greenLightColor,
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 12,
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => EditTaskScreen(),
+              ),
+            );
+          },
+          child: Container(
+            width: 95,
+            height: 28,
+            decoration: BoxDecoration(
+              color: greenLightColor,
+              borderRadius: BorderRadius.circular(18),
             ),
-            child: Row(
-              children: [
-                Text(
-                  'ویرایش',
-                  style: TextStyle(color: greenColor),
-                ),
-                SizedBox(width: 10),
-                Image.asset('images/icon_edit.png'),
-              ],
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 12,
+              ),
+              child: Row(
+                children: [
+                  Text(
+                    'ویرایش',
+                    style: TextStyle(color: greenColor),
+                  ),
+                  SizedBox(width: 10),
+                  Image.asset('images/icon_edit.png'),
+                ],
+              ),
             ),
           ),
         ),
