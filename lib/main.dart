@@ -4,6 +4,7 @@ import 'package:note_hive_flutter/data/constants/constant_colors.dart';
 import 'package:note_hive_flutter/data/task.dart';
 import 'package:note_hive_flutter/screens/add_task_screen.dart';
 import 'package:note_hive_flutter/screens/home_screen.dart';
+import 'package:note_hive_flutter/screens/test.screen.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -30,7 +31,7 @@ class Application extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: TestScreen(),
     );
   }
 }
