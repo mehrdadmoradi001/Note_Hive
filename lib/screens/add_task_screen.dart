@@ -46,12 +46,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               _getTextFiledTask(
                 focusNode: negahban1,
                 controller: textFiledTaskTitleController,
+                textName: 'عنوان تسک'
               ),
               SizedBox(height: 50),
               _getTextFiledTask(
                   focusNode: negahban2,
                   controller: textFiledTaskSubTitleController,
-                  num: 2),
+                  num: 2,
+              textName: 'توضیحات تسک'),
               Spacer(),
               _getButtonTask(),
             ],
@@ -84,7 +86,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   Widget _getTextFiledTask(
-      {FocusNode? focusNode, TextEditingController? controller, int? num}) {
+      {FocusNode? focusNode, TextEditingController? controller, int? num,String? textName}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 44),
       child: Directionality(
@@ -95,7 +97,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           focusNode: focusNode,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.all(15),
-            labelText: 'عنوان تسک',
+            labelText: textName,
             labelStyle: TextStyle(
               fontSize: 20,
               color: focusNode!.hasFocus ? greenColor : grayColor2,
