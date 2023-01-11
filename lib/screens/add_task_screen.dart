@@ -67,6 +67,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         String taskTitle = textFiledTaskTitleController.text;
         String taskSubTitle = textFiledTaskSubTitleController.text;
         _addTask(taskTitle,taskSubTitle);
+        Navigator.of(context).pop();
       },
       child: Text(
         'اضافه کردن تسک',
