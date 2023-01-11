@@ -31,7 +31,7 @@ class Application extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: TestScreen(),
+      home:HomeScreen(),
     );
   }
 }

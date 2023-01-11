@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_hive_flutter/data/constants/constant_colors.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:note_hive_flutter/data/task.dart';
@@ -22,12 +23,15 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: grayColor,
       body: SafeArea(
         child: Center(
-          child: ListView.builder(
-            itemCount: taskBox.values.length,
-            itemBuilder: (context, index) {
-              var task = taskBox.values.toList()[index];
-              return TaskWidget(task: task);
-            },
+          child: ValueListenableBuilder(
+            valueListenable: taskBox.listenable(),
+            builder: (context, value, child) => ListView.builder(
+              itemCount: taskBox.values.length,
+              itemBuilder: (context, index) {
+                var task = taskBox.values.toList()[index];
+                return TaskWidget(task: task);
+              },
+            ),
           ),
         ),
       ),
@@ -44,5 +48,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 }
