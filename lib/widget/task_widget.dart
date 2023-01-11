@@ -128,7 +128,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => EditTaskScreen(),
+                builder: (context) => EditTaskScreen(task: widget.task,),
               ),
             );
           },

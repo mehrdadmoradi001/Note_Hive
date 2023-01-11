@@ -5,7 +5,8 @@ import 'package:note_hive_flutter/data/constants/constant_colors.dart';
 import '../data/task.dart';
 
 class EditTaskScreen extends StatefulWidget {
-  const EditTaskScreen({Key? key}) : super(key: key);
+  EditTaskScreen({Key? key, required this.task}) : super(key: key);
+  Task task;
 
   @override
   State<EditTaskScreen> createState() => _EditTaskScreenState();
@@ -15,15 +16,19 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   FocusNode negahban1 = FocusNode();
   FocusNode negahban2 = FocusNode();
 
-  final TextEditingController textFiledTaskTitleController =
-  TextEditingController();
-  final TextEditingController textFiledTaskSubTitleController =
-  TextEditingController();
+  TextEditingController? textFiledTaskTitleController;
+
+  TextEditingController? textFiledTaskSubTitleController;
 
   final taskBox = Hive.box<Task>('taskBox');
 
   @override
   void initState() {
+    textFiledTaskTitleController =
+        TextEditingController(text: widget.task.title);
+    textFiledTaskSubTitleController =
+        TextEditingController(text: widget.task.subTitle);
+
     // TODO: implement initState
     super.initState();
     negahban1.addListener(() {
@@ -46,8 +51,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
               _getTextFiledTask(
                   focusNode: negahban1,
                   controller: textFiledTaskTitleController,
-                  textName: 'عنوان تسک'
-              ),
+                  textName: 'عنوان تسک'),
               SizedBox(height: 50),
               _getTextFiledTask(
                   focusNode: negahban2,
@@ -66,9 +70,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   Widget _getButtonTask() {
     return ElevatedButton(
       onPressed: () {
-        String taskTitle = textFiledTaskTitleController.text;
-        String taskSubTitle = textFiledTaskSubTitleController.text;
-        _addTask(taskTitle,taskSubTitle);
+        String taskTitle = textFiledTaskTitleController!.text;
+        String taskSubTitle = textFiledTaskSubTitleController!.text;
+        _editTask(taskTitle, taskSubTitle);
         Navigator.of(context).pop();
       },
       child: Text(
@@ -86,7 +90,10 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   }
 
   Widget _getTextFiledTask(
-      {FocusNode? focusNode, TextEditingController? controller, int? num,String? textName}) {
+      {FocusNode? focusNode,
+      TextEditingController? controller,
+      int? num,
+      String? textName}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 44),
       child: Directionality(
@@ -123,13 +130,10 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     );
   }
 
-
-  _addTask(String taskTitle, String taskSubTitle){
-    //add task
-    var task = Task(title: taskTitle, subTitle: taskSubTitle);
-    taskBox.add(task);
+  _editTask(String taskTitle, String taskSubTitle) {
+    //edit task
+    widget.task.title = taskTitle;
+    widget.task.subTitle = taskSubTitle;
+    widget.task.save();
   }
-
-
-
 }
