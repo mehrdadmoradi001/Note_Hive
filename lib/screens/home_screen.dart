@@ -29,25 +29,27 @@ class _HomeScreenState extends State<HomeScreen> {
             valueListenable: taskBox.listenable(),
             builder: (context, value, child) =>
                 NotificationListener<UserScrollNotification>(
-                  onNotification:(notif){
-                    setState(() {
-                      if(notif.direction == ScrollDirection.forward){
-                        isFabVisible = true;
-                      }
-                      if(notif.direction == ScrollDirection.reverse){
-                        isFabVisible = false;
-                      }
-                    });
-                    return true;
+              onNotification: (notif) {
+                setState(
+                  () {
+                    if (notif.direction == ScrollDirection.forward) {
+                      isFabVisible = true;
+                    }
+                    if (notif.direction == ScrollDirection.reverse) {
+                      isFabVisible = false;
+                    }
                   },
-                  child: ListView.builder(
-                    itemCount: taskBox.values.length,
-                    itemBuilder: (context, index) {
-                      var task = taskBox.values.toList()[index];
-                      return TaskWidget(task: task);
-                    },
-                  ),
-                ),
+                );
+                return true;
+              },
+              child: ListView.builder(
+                itemCount: taskBox.values.length,
+                itemBuilder: (context, index) {
+                  var task = taskBox.values.toList()[index];
+                  return _getListItem(task);
+                },
+              ),
+            ),
           ),
         ),
       ),
@@ -57,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => AddTaskScreen(), //
+                builder: (context) => AddTaskScreen(),
               ),
             );
           },
@@ -65,6 +67,16 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Image.asset('images/icon_add.png'),
         ),
       ),
+    );
+  }
+
+  Widget _getListItem(Task task) {
+    return Dismissible(
+      key: UniqueKey(),
+      onDismissed: (direction) {
+        task.delete();
+      },
+      child: TaskWidget(task: task),
     );
   }
 }

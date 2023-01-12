@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_hive_flutter/data/constants/constant_colors.dart';
+import 'package:time_pickerr/time_pickerr.dart';
 
 import '../data/task.dart';
 
@@ -21,6 +22,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       TextEditingController();
 
   final taskBox = Hive.box<Task>('taskBox');
+  DateTime? _time;
 
   @override
   void initState() {
@@ -44,16 +46,31 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             children: [
               SizedBox(height: 50),
               _getTextFiledTask(
-                focusNode: negahban1,
-                controller: textFiledTaskTitleController,
-                textName: 'عنوان تسک'
-              ),
+                  focusNode: negahban1,
+                  controller: textFiledTaskTitleController,
+                  textName: 'عنوان تسک'),
               SizedBox(height: 50),
               _getTextFiledTask(
                   focusNode: negahban2,
                   controller: textFiledTaskSubTitleController,
                   num: 2,
-              textName: 'توضیحات تسک'),
+                  textName: 'توضیحات تسک'),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: CustomHourPicker(
+                  title: 'زمان تسک رو انتخاب کن',
+                  negativeButtonText: 'حذف کن',
+                  positiveButtonText: 'انتخاب زمان',
+                  elevation: 2,
+                  titleStyle: _getTextStyle(greenColor,18,FontWeight.bold),
+                  negativeButtonStyle: _getTextStyle(Colors.red,18,FontWeight.bold),
+                  positiveButtonStyle: _getTextStyle(greenColor,18,FontWeight.bold),
+                  onNegativePressed: (context) {},
+                  onPositivePressed: (context, time) {
+                    _time = time;
+                  },
+                ),
+              ),
               Spacer(),
               _getButtonTask(),
             ],
@@ -63,12 +80,20 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
+  TextStyle _getTextStyle(Color color,double double,FontWeight fontWeight) {
+    return TextStyle(
+      color: color,
+      fontSize: double,
+      fontWeight: fontWeight,
+    );
+  }
+
   Widget _getButtonTask() {
     return ElevatedButton(
       onPressed: () {
         String taskTitle = textFiledTaskTitleController.text;
         String taskSubTitle = textFiledTaskSubTitleController.text;
-        _addTask(taskTitle,taskSubTitle);
+        _addTask(taskTitle, taskSubTitle);
         Navigator.of(context).pop();
       },
       child: Text(
@@ -86,7 +111,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   Widget _getTextFiledTask(
-      {FocusNode? focusNode, TextEditingController? controller, int? num,String? textName}) {
+      {FocusNode? focusNode,
+      TextEditingController? controller,
+      int? num,
+      String? textName}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 44),
       child: Directionality(
@@ -123,13 +151,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
-
-  _addTask(String taskTitle, String taskSubTitle){
+  _addTask(String taskTitle, String taskSubTitle) {
     //add task
-    var task = Task(title: taskTitle, subTitle: taskSubTitle);
+    var task = Task(title: taskTitle, subTitle: taskSubTitle, time: _time!);
     taskBox.add(task);
   }
-
-
-
 }

@@ -116,7 +116,14 @@ class _TaskWidgetState extends State<TaskWidget> {
             ),
             child: Row(
               children: [
-                Text('10:30'),
+                Text(
+                  '${widget.task.time.hour}:${widget.task.time.minute}',
+                  style: TextStyle(
+                    color: whiteColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14
+                  ),
+                ),
                 SizedBox(width: 10),
                 Image.asset('images/icon_time.png'),
               ],
@@ -128,7 +135,9 @@ class _TaskWidgetState extends State<TaskWidget> {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => EditTaskScreen(task: widget.task,),
+                builder: (context) => EditTaskScreen(
+                  task: widget.task,
+                ),
               ),
             );
           },
