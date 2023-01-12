@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_hive_flutter/data/constants/constant_colors.dart';
+import 'package:time_pickerr/time_pickerr.dart';
 
 import '../data/task.dart';
 
@@ -21,6 +22,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   TextEditingController? textFiledTaskSubTitleController;
 
   final taskBox = Hive.box<Task>('taskBox');
+  DateTime? _time;
 
   @override
   void initState() {
@@ -58,12 +60,36 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                   controller: textFiledTaskSubTitleController,
                   num: 2,
                   textName: 'توضیحات تسک'),
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: CustomHourPicker(
+                  title: 'زمان تسک رو انتخاب کن',
+                  negativeButtonText: 'حذف کن',
+                  positiveButtonText: 'انتخاب زمان',
+                  elevation: 2,
+                  titleStyle: _getTextStyle(greenColor,18,FontWeight.bold),
+                  negativeButtonStyle: _getTextStyle(Colors.red,18,FontWeight.bold),
+                  positiveButtonStyle: _getTextStyle(greenColor,18,FontWeight.bold),
+                  onNegativePressed: (context) {},
+                  onPositivePressed: (context, time) {
+                    _time = time;
+                  },
+                ),
+              ),
               Spacer(),
               _getButtonTask(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  TextStyle _getTextStyle(Color color,double double,FontWeight fontWeight) {
+    return TextStyle(
+      color: color,
+      fontSize: double,
+      fontWeight: fontWeight,
     );
   }
 
@@ -134,6 +160,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     //edit task
     widget.task.title = taskTitle;
     widget.task.subTitle = taskSubTitle;
+    widget.task.time = _time!;
     widget.task.save();
   }
 }

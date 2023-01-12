@@ -117,7 +117,7 @@ class _TaskWidgetState extends State<TaskWidget> {
             child: Row(
               children: [
                 Text(
-                  '${widget.task.time.hour}:${widget.task.time.minute}',
+                  '${widget.task.time.hour}:${_getMinUnderTen(widget.task.time)}',
                   style: TextStyle(
                     color: whiteColor,
                     fontWeight: FontWeight.bold,
@@ -168,4 +168,13 @@ class _TaskWidgetState extends State<TaskWidget> {
       ],
     );
   }
+
+  String _getMinUnderTen(DateTime time){
+    if(time.minute < 10){
+      return '0${time.minute}';
+    }else {
+      return time.minute.toString();
+    }
+  }
+
 }
