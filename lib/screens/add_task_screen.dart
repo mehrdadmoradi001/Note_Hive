@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_hive_flutter/data/constants/constant_colors.dart';
+import 'package:note_hive_flutter/data/task.type.dart';
+import 'package:note_hive_flutter/utility/utility.dart';
 import 'package:time_pickerr/time_pickerr.dart';
 
 import '../data/task.dart';
@@ -44,12 +46,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 50),
+              SizedBox(height: 40),
               _getTextFiledTask(
                   focusNode: negahban1,
                   controller: textFiledTaskTitleController,
                   textName: 'عنوان تسک'),
-              SizedBox(height: 50),
+              SizedBox(height: 40),
               _getTextFiledTask(
                   focusNode: negahban2,
                   controller: textFiledTaskSubTitleController,
@@ -62,12 +64,29 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   negativeButtonText: 'حذف کن',
                   positiveButtonText: 'انتخاب زمان',
                   elevation: 2,
-                  titleStyle: _getTextStyle(greenColor,18,FontWeight.bold),
-                  negativeButtonStyle: _getTextStyle(Colors.red,18,FontWeight.bold),
-                  positiveButtonStyle: _getTextStyle(greenColor,18,FontWeight.bold),
+                  titleStyle: _getTextStyle(greenColor, 18, FontWeight.bold),
+                  negativeButtonStyle:
+                      _getTextStyle(Colors.red, 18, FontWeight.bold),
+                  positiveButtonStyle:
+                      _getTextStyle(greenColor, 18, FontWeight.bold),
                   onNegativePressed: (context) {},
                   onPositivePressed: (context, time) {
                     _time = time;
+                  },
+                ),
+              ),
+              Container(
+                height: 165,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: getTaskTypeList().length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      child: TaskTypeItemList(
+                        taskType: getTaskTypeList()[index],
+                      ),
+                    );
                   },
                 ),
               ),
@@ -76,11 +95,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             ],
           ),
         ),
+
       ),
     );
   }
 
-  TextStyle _getTextStyle(Color color,double double,FontWeight fontWeight) {
+  TextStyle _getTextStyle(Color color, double double, FontWeight fontWeight) {
     return TextStyle(
       color: color,
       fontSize: double,
@@ -155,5 +175,24 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     //add task
     var task = Task(title: taskTitle, subTitle: taskSubTitle, time: _time!);
     taskBox.add(task);
+  }
+}
+
+class TaskTypeItemList extends StatelessWidget {
+  TaskTypeItemList({Key? key, required this.taskType}) : super(key: key);
+
+  TaskType taskType;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 140,
+      child: Column(
+        children: [
+          Image.asset(taskType.image),
+          Text(taskType.title),
+        ],
+      ),
+    );
   }
 }
