@@ -25,47 +25,56 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: grayColor,
       body: SafeArea(
         child: Center(
-          child: ValueListenableBuilder(
-            valueListenable: taskBox.listenable(),
-            builder: (context, value, child) =>
-                NotificationListener<UserScrollNotification>(
-              onNotification: (notif) {
-                setState(
-                  () {
-                    if (notif.direction == ScrollDirection.forward) {
-                      isFabVisible = true;
-                    }
-                    if (notif.direction == ScrollDirection.reverse) {
-                      isFabVisible = false;
-                    }
-                  },
-                );
-                return true;
-              },
-              child: ListView.builder(
-                itemCount: taskBox.values.length,
-                itemBuilder: (context, index) {
-                  var task = taskBox.values.toList()[index];
-                  return _getListItem(task);
-                },
-              ),
-            ),
-          ),
+          child: _getValueListenableBuilder(),
         ),
       ),
-      floatingActionButton: Visibility(
-        visible: isFabVisible,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddTaskScreen(),
-              ),
-            );
+      floatingActionButton: _getFloatingActionButton(context),
+    );
+  }
+
+  Widget _getValueListenableBuilder() {
+    return ValueListenableBuilder(
+      valueListenable: taskBox.listenable(),
+      builder: (context, value, child) =>
+          NotificationListener<UserScrollNotification>(
+        onNotification: (notif) {
+          setState(
+            () {
+              if (notif.direction == ScrollDirection.forward) {
+                isFabVisible = true;
+              }
+              if (notif.direction == ScrollDirection.reverse) {
+                isFabVisible = false;
+              }
+            },
+          );
+          return true;
+        },
+        child: ListView.builder(
+          itemCount: taskBox.values.length,
+          itemBuilder: (context, index) {
+            var task = taskBox.values.toList()[index];
+            //print(task.taskType.title);
+            return _getListItem(task);
           },
-          backgroundColor: greenColor,
-          child: Image.asset('images/icon_add.png'),
         ),
+      ),
+    );
+  }
+
+  Widget _getFloatingActionButton(BuildContext context) {
+    return Visibility(
+      visible: isFabVisible,
+      child: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddTaskScreen(),
+            ),
+          );
+        },
+        backgroundColor: greenColor,
+        child: Image.asset('images/icon_add.png'),
       ),
     );
   }
