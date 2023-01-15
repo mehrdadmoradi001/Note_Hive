@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_hive_flutter/data/constants/constant_colors.dart';
+import 'package:note_hive_flutter/data/task.type.dart';
+import 'package:note_hive_flutter/utility/utility.dart';
 import 'package:time_pickerr/time_pickerr.dart';
 
 import '../data/task.dart';
@@ -23,6 +25,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
   final taskBox = Hive.box<Task>('taskBox');
   DateTime? _time;
+
+  int _selectedTaskTypeItem = 0;
 
   @override
   void initState() {
@@ -49,12 +53,12 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 50),
+              SizedBox(height: 40),
               _getTextFiledTask(
                   focusNode: negahban1,
                   controller: textFiledTaskTitleController,
                   textName: 'عنوان تسک'),
-              SizedBox(height: 50),
+              SizedBox(height: 40),
               _getTextFiledTask(
                   focusNode: negahban2,
                   controller: textFiledTaskSubTitleController,
@@ -67,12 +71,38 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                   negativeButtonText: 'حذف کن',
                   positiveButtonText: 'انتخاب زمان',
                   elevation: 2,
-                  titleStyle: _getTextStyle(greenColor,18,FontWeight.bold),
-                  negativeButtonStyle: _getTextStyle(Colors.red,18,FontWeight.bold),
-                  positiveButtonStyle: _getTextStyle(greenColor,18,FontWeight.bold),
+                  titleStyle: _getTextStyle(greenColor, 18, FontWeight.bold),
+                  negativeButtonStyle: _getTextStyle(
+                      Colors.red, 18, FontWeight.bold),
+                  positiveButtonStyle: _getTextStyle(
+                      greenColor, 18, FontWeight.bold),
                   onNegativePressed: (context) {},
                   onPositivePressed: (context, time) {
                     _time = time;
+                  },
+                ),
+              ),
+              Container(
+                height: 165,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: getTaskTypeList().length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            _selectedTaskTypeItem = index;
+                          });
+                        },
+                        child: TaskTypeItemList(
+                          taskType: getTaskTypeList()[index],
+                          index: index,
+                          selectedItemList: _selectedTaskTypeItem,
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -85,7 +115,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     );
   }
 
-  TextStyle _getTextStyle(Color color,double double,FontWeight fontWeight) {
+  TextStyle _getTextStyle(Color color, double double, FontWeight fontWeight) {
     return TextStyle(
       color: color,
       fontSize: double,
@@ -115,11 +145,10 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     );
   }
 
-  Widget _getTextFiledTask(
-      {FocusNode? focusNode,
-      TextEditingController? controller,
-      int? num,
-      String? textName}) {
+  Widget _getTextFiledTask({FocusNode? focusNode,
+    TextEditingController? controller,
+    int? num,
+    String? textName}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 44),
       child: Directionality(
@@ -161,6 +190,43 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     widget.task.title = taskTitle;
     widget.task.subTitle = taskSubTitle;
     widget.task.time = _time!;
+    widget.task.taskType = getTaskTypeList()[_selectedTaskTypeItem];
     widget.task.save();
+  }
+}
+
+
+class TaskTypeItemList extends StatelessWidget {
+  TaskTypeItemList(
+      {Key? key,
+        required this.taskType,
+        required this.index,
+        required this.selectedItemList})
+      : super(key: key);
+
+  TaskType taskType;
+  int index;
+  int selectedItemList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: selectedItemList == index ? Colors.green : grayColor,
+          width: selectedItemList == index ? 3 : 2,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+      ),
+      width: 140,
+      child: Column(
+        children: [
+          Image.asset(taskType.image),
+          Text(taskType.title),
+        ],
+      ),
+    );
   }
 }

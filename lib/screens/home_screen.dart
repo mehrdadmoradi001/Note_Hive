@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
           itemCount: taskBox.values.length,
           itemBuilder: (context, index) {
             var task = taskBox.values.toList()[index];
-            //print(task.taskType.title);
+            print(task.taskType.title);
             return _getListItem(task);
           },
         ),
