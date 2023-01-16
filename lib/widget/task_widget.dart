@@ -65,9 +65,19 @@ class _TaskWidgetState extends State<TaskWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Checkbox(
-                    value: isBoxChecked,
-                    onChanged: (isChecked) {},
+                  Transform.scale(
+                    scale: 1.3,
+                    child: Checkbox(
+                      value: isBoxChecked,
+                      activeColor: Colors.green,
+                      checkColor: whiteColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        ),
+                      ),
+                      onChanged: (isChecked) {},
+                    ),
                   ),
                   Text(widget.task.title),
                 ],
@@ -85,7 +95,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           width: 20,
         ),
         Image.asset(
-          'images/workout.png',
+          widget.task.taskType.image,
         ),
       ],
     );
@@ -119,10 +129,9 @@ class _TaskWidgetState extends State<TaskWidget> {
                 Text(
                   '${widget.task.time.hour}:${_getMinUnderTen(widget.task.time)}',
                   style: TextStyle(
-                    color: whiteColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14
-                  ),
+                      color: whiteColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14),
                 ),
                 SizedBox(width: 10),
                 Image.asset('images/icon_time.png'),
@@ -169,12 +178,11 @@ class _TaskWidgetState extends State<TaskWidget> {
     );
   }
 
-  String _getMinUnderTen(DateTime time){
-    if(time.minute < 10){
+  String _getMinUnderTen(DateTime time) {
+    if (time.minute < 10) {
       return '0${time.minute}';
-    }else {
+    } else {
       return time.minute.toString();
     }
   }
-
 }

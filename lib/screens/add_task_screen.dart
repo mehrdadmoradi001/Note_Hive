@@ -54,7 +54,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   focusNode: negahban1,
                   controller: textFiledTaskTitleController,
                   textName: 'عنوان تسک'),
-              SizedBox(height: 40),
+              SizedBox(height: 30),
               _getTextFiledTask(
                   focusNode: negahban2,
                   controller: textFiledTaskSubTitleController,
