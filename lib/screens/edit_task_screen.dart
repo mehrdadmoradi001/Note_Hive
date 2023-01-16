@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:note_hive_flutter/data/constants/constant_colors.dart';
 import 'package:note_hive_flutter/data/task.type.dart';
 import 'package:note_hive_flutter/utility/utility.dart';
+import 'package:note_hive_flutter/widget/task_type_item.dart';
 import 'package:time_pickerr/time_pickerr.dart';
 
 import '../data/task.dart';
@@ -91,7 +92,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                 ),
               ),
               Container(
-                height: 165,
+                height: 175,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: getTaskTypeList().length,
@@ -203,38 +204,3 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   }
 }
 
-
-class TaskTypeItemList extends StatelessWidget {
-  TaskTypeItemList(
-      {Key? key,
-        required this.taskType,
-        required this.index,
-        required this.selectedItemList})
-      : super(key: key);
-
-  TaskType taskType;
-  int index;
-  int selectedItemList;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: selectedItemList == index ? Colors.green : grayColor,
-          width: selectedItemList == index ? 3 : 2,
-        ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
-      ),
-      width: 140,
-      child: Column(
-        children: [
-          Image.asset(taskType.image),
-          Text(taskType.title),
-        ],
-      ),
-    );
-  }
-}
